@@ -194,6 +194,15 @@ cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
 ninja
 ```
 
+# Discussion Notes on PCL Package File
+
+This section contians rough points to dicuss during the tutorial
+
+- The package is technically "**version agnostic**".  This is done by only specifying the version when creating the package.  Typically each package file is in its own git repository and each version is stored as a branch.  This package was done like this however because it was created along with a multitude of conan packages that all have to work together.
+- Notice that while most dependencies are `@ntc`, `gtest` is from `lasote`.  This is a huge advantage unique to a package manager, where if it already exists, then we can just use it with almost no effort.
+- The versions of the dependents is quite loose, *e.g.* `boost/[>1.46]`.  This is because as far as I'm aware, PCL is fine with any version of boost greater than 1.46.  This allows the packages to more easily intermix.
+- `options` is a tuple of options that allow us to inject variation into the package, which will generate a package with a unique ID.  Thus, PCL 1.7.2 static has a different ID than PCL 1.7.2 shared.
+
 # Resources
 
 - [Documentation](http://docs.conan.io/en/latest/index.html)
