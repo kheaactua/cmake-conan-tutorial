@@ -11,8 +11,8 @@ Small examples of how to use CMake with Conan to install dependencies.
 # Python Environment
 
 While conan is compatible with Python 2.7 and Python 3, it is recommended to
-use conan in a python virutal envionment.  Moreover, the Conan package files
-written at NTC are targetted at Python 3.6.
+use conan in a python virtual environment.  Moreover, the Conan package files
+written at NTC are udo argeted at Python 3.6.
 
 ## Install Python
 To set up this environment, first ensure you have Python3.6 installed.
@@ -31,8 +31,8 @@ Windows: [Download Python](https://www.python.org/downloads/)
 Install the python tool called
 [virtualenv](https://virtualenv.pypa.io/en/stable/).  This tool allows you to
 set up a local python environment, sort of like a Docker container.  Basically,
-when you activate a specific python environment, all your ``python binaries
-(*e.g.* `python`, `pip`, etc) are set to use a specific version, and any python
+when you activate a specific python environment, all your python binaries
+(*e.g.* `python`, `pip`, *etc.*) are set to use a specific version, and any python
 package you install is installed into your local environment.
 
 Linux
@@ -53,8 +53,8 @@ pip install virutalenv
 You can create a container (folder) for your virtual environment anywhere you
 wish.  You may also name it anything you with.  For example, you can be very
 generic and name it `python36` for example (though this someone defeats the
-points of virutal environments), or you can make it almost application
-speicifc, *i.e.* name it `conan`.  We'll do the latter.
+points of virtual environments), or you can make it almost application
+specific, *i.e.* name it `conan`.  We'll do the latter.
 
 Linux:
 ```sh
@@ -107,9 +107,9 @@ You also want to ensure your profile is set up.  Typically the default profile
 is sufficient, but it's worth checking in case you've injected clang or some
 other compiler into your environment.  This can be seen by typing
 
-```
+```sh
 conan profile list
-````
+```
 
 and
 
@@ -154,13 +154,13 @@ packages we'll use in our project.  You'll also see a `CMakeFile.txt` file,
 this is the CMake file for a typical project with some Conan directives added
 in.
 
-*Recall*, everything in this tutorial is taylored towards integration with
+*Recall*, everything in this tutorial is tailored towards integration with
 current Neptec source code.  This effectively means that while many solutions
 exist to solve any one problem, this tutorial chooses the solutions will
 integrate the best - or rather - use the more similar patterns, as Neptec
 source code does.
 
-Create an *in-source* bld directory named `bld` and run `conan install`, e.g.:
+Create an *in-source* bld directory named `bld` and run `conan install`, *e.g.*:
 ```sh
 mkdir bld
 cd bld
@@ -169,7 +169,7 @@ conan install ..
 ```
 
 You'll see that PCL, along will all of it's dependencies (boost, eigen, flann,
-etc) are installed.  You'll also see a `conanbuildinfo.cmake` file (and a
+*etc*) are installed.  You'll also see a `conanbuildinfo.cmake` file (and a
 `.txt` file, but we'll ignore that one.)
 
 The CMake file attempts to build a simple PCL app (`main.cpp`) that depends on
@@ -196,12 +196,13 @@ ninja
 
 # Discussion Notes on PCL Package File
 
-This section contians rough points to dicuss during the tutorial
+This section contains rough points to discuss during the tutorial
 
 - The package is technically "**version agnostic**".  This is done by only specifying the version when creating the package.  Typically each package file is in its own git repository and each version is stored as a branch.  This package was done like this however because it was created along with a multitude of conan packages that all have to work together.
 - Notice that while most dependencies are `@ntc`, `gtest` is from `lasote`.  This is a huge advantage unique to a package manager, where if it already exists, then we can just use it with almost no effort.
 - The versions of the dependents is quite loose, *e.g.* `boost/[>1.46]`.  This is because as far as I'm aware, PCL is fine with any version of boost greater than 1.46.  This allows the packages to more easily intermix.
 - `options` is a tuple of options that allow us to inject variation into the package, which will generate a package with a unique ID.  Thus, PCL 1.7.2 static has a different ID than PCL 1.7.2 shared.
+- Discussion of what libs in `package_info` to place in `libs`.  I've converged to thinking that simply the library name (without prefix or suffix) is best.  This is optimal because they can then be searched for with CMake's `find_library`.  This fails however in instances where CMake wants a full path to a specific library, suffix and all (*i.e.* `zlib`.)  Also, it's probably best only to pack the immediate libraries, rather than the dependencies as well, the OpenCV package currently does this, and that renders this property more or less unusable.  All said though, this only works in simple cases, larger vendors that build different libraries depending on the options, and only load some at any given time, require unique considerations.
 - Why didn't I use `tools.collect_libs()` in `package_info` instead of listing the libraries?  I didn't know about it at the time.
 - Why did I use `args` instead of `cmake.definitions`, again, did not know about it at the top.
 
