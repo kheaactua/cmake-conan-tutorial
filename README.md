@@ -202,6 +202,8 @@ This section contians rough points to dicuss during the tutorial
 - Notice that while most dependencies are `@ntc`, `gtest` is from `lasote`.  This is a huge advantage unique to a package manager, where if it already exists, then we can just use it with almost no effort.
 - The versions of the dependents is quite loose, *e.g.* `boost/[>1.46]`.  This is because as far as I'm aware, PCL is fine with any version of boost greater than 1.46.  This allows the packages to more easily intermix.
 - `options` is a tuple of options that allow us to inject variation into the package, which will generate a package with a unique ID.  Thus, PCL 1.7.2 static has a different ID than PCL 1.7.2 shared.
+- Why didn't I use `tools.collect_libs()` in `package_info` instead of listing the libraries?  I didn't know about it at the time.
+- Why did I use `args` instead of `cmake.definitions`, again, did not know about it at the top.
 
 # Resources
 
