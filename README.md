@@ -21,7 +21,7 @@ Linux
 ```sh
 sudo add-apt-repository ppa:jonathonf/python-3.6
 sudo apt-get update
-sudo apt-get install -y python3.6 python3-pip
+sudo apt-get install -y python3.6 python3-pip python3.6-dev
 ```
 
 Windows: [Download Python](https://www.python.org/downloads/)
