@@ -52,7 +52,7 @@ pip install virutalenv
 
 You can create a container (folder) for your virtual environment anywhere you
 wish.  You may also name it anything you with.  For example, you can be very
-generic and name it `python36` for example (though this someone defeats the
+generic and name it `python36` for example (though this somewhat defeats the
 points of virtual environments), or you can make it almost application
 specific, *i.e.* name it `conan`.  We'll do the latter.
 
