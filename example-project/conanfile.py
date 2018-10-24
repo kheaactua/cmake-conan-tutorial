@@ -1,20 +1,24 @@
 #!/usr/bin/env python
+# -*- coding: future_fstrings -*-
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, CMake, tools, RunEnvironment
+from conans import ConanFile, CMake, tools
 import os
 
 
 class PclExampleConan(ConanFile):
     settings = 'os', 'compiler', 'build_type', 'arch'
-    generators = 'cmake'
+    generators = 'cmake', 'virtualenv'
 
     requires = (
-        'pcl/1.7.2@ntc/stable',
+        'pcl/[>=1.7.2]@ntc/stable',
     )
 
-    def configuration(self):
-        self.options['pcl'].shared = True
+    def requirements(self):
+        if tools.os_info.is_linux and '14.04' == tools.os_info.os_version and 'x86_64' == self.settings.arch:
+            self.requires('qt/5.3.2@ntc/manual', override=True)
+        else:
+            self.requires('qt/5.3.2@ntc/stable', override=True)
 
     def build(self):
         cmake = CMake(self)
